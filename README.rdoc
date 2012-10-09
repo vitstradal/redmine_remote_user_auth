@@ -1,0 +1,68 @@
+= Redmine Remote User auth plugin
+
+Adds Remote User HTTP header authorization to Redmine. 
+
+== Requirements
+
+-
+
+== Installation
+
+Before installing make sure to stop redmine.
+
+1. <tt>cd [redmine-install-dir]/plugins</tt>
+2. <tt>export RAILS_ENV=production</tt>
+3. <tt>git clone git://XXXX</tt>
+4. <tt>cd ..</tt>
+5. <tt>rake redmine:plugins:migrate</tt>
+6. <tt>bundle install --without development test</tt>
+
+After this steps you can switch back on redmine. Existing users will gain 
+Remote User auth method (Look at Administration > Users).
+
+== Configuration
+
+Nice tutorial: http://www.vanemery.com/Linux/Apache/apache-SSL.html
+
+In my case, I find this to be the configuration I wanted
+
+        SSLEngine on
+        SSLProtocol all 
+        SSLCipherSuite HIGH:MEDIUM
+
+        SSLCertificateFile /etc/apache2/ssl/server.crt
+        SSLCertificateKeyFile /etc/apache2/ssl/server.key
+        SSLCACertificateFile /etc/apache2/ssl/ca.crt
+
+        SetEnvIf User-Agent ".*MSIE.*" \
+                nokeepalive ssl-unclean-shutdown \
+                downgrade-1.0 force-response-1.0
+
+        SSLVerifyClient optional
+        SSLVerifyDepth 1
+        SSLOptions +StdEnvVars
+
+	RequestHeader unset Remote-User-Email
+	RequestHeader add Remote-User-Email "%{SSL_CLIENT_S_DN_Email}e"
+        
+        SSLVerifyClient require
+
+
+By making <tt>SSLVerifyClient optional</tt> and commenting <tt>Require
+valid-user</tt>, it's possible to login without a certificate, using
+the regular login/password. A link is shown in the login form to
+require SSL authentication, see the <tt>Location /login/ssl</tt>
+section in the apache configuration.
+
+If you want to force your users to use certificates, change SSLVerifyClient to require and uncomment <tt>Require valid-user</tt>
+== Uninstall
+
+Before installing make sure to stop redmine and before that to disable 
+Remote User auth method for all users (Look at Administration > Users)
+
+1. <tt>cd [redmine-install-dir]</tt>
+2. <tt>export RAILS_ENV=production</tt>
+3. <tt>rake redmine:plugins:migrate NAME=redmine_cert_auth VERSION=0</tt>
+4. <tt>rm -Rf plugins/redmine_cert_auth</tt>
+
+After this steps you can switch back on redmine.
