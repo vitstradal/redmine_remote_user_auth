@@ -1,10 +1,8 @@
 = Redmine Remote User auth plugin
 
-Adds Remote User HTTP header authorization to Redmine. 
-
-== Requirements
-
--
+With reverse proxy it can be used to use SSL certificate to login.
+Plugin checks HTTP header Remote-User-Email. If user with such email
+exists he/she will be logged in.
 
 == Installation
 
@@ -22,9 +20,15 @@ Remote User auth method (Look at Administration > Users).
 
 == Configuration
 
-Nice tutorial: http://www.vanemery.com/Linux/Apache/apache-SSL.html
 
-In my case, I find this to be the configuration I wanted
+Reverse proxy must:
+
+    * check certificate
+    * unset Remote-User_email
+    * header an set it to DN_Email from certificate
+
+Apache example:
+
 
         SSLEngine on
         SSLProtocol all 
@@ -48,13 +52,9 @@ In my case, I find this to be the configuration I wanted
         SSLVerifyClient require
 
 
-By making <tt>SSLVerifyClient optional</tt> and commenting <tt>Require
-valid-user</tt>, it's possible to login without a certificate, using
-the regular login/password. A link is shown in the login form to
-require SSL authentication, see the <tt>Location /login/ssl</tt>
-section in the apache configuration.
+With valid certificate you can still log-in as users with normal Auth
+Method.
 
-If you want to force your users to use certificates, change SSLVerifyClient to require and uncomment <tt>Require valid-user</tt>
 == Uninstall
 
 Before installing make sure to stop redmine and before that to disable 
@@ -62,7 +62,7 @@ Remote User auth method for all users (Look at Administration > Users)
 
 1. <tt>cd [redmine-install-dir]</tt>
 2. <tt>export RAILS_ENV=production</tt>
-3. <tt>rake redmine:plugins:migrate NAME=redmine_cert_auth VERSION=0</tt>
+3. <tt>rake redmine:plugins:migrate NAME=redmine_remote_user_auth VERSION=0</tt>
 4. <tt>rm -Rf plugins/redmine_cert_auth</tt>
 
 After this steps you can switch back on redmine.
