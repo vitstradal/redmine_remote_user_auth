@@ -4,6 +4,10 @@ With reverse proxy it can be used to use SSL certificate to login.
 Plugin checks HTTP header Remote-User-Email. If user with such email
 exists he/she will be logged in.
 
+== Require
+
+Redmine 2.x
+
 == Installation
 
 Before installing make sure to stop redmine.
