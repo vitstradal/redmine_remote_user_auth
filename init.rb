@@ -8,6 +8,11 @@ Redmine::Plugin.register :redmine_remote_user_auth do
 end
 
 Redmine::MenuManager.map :account_menu do |menu|
-  menu.push :loginRemoteUser, :signinRemoteUser_path, :if => Proc.new { !User.current.logged? }
+  #menu.push :loginRemoteUser, :signinRemoteUser_path, :if => Proc.new { !User.current.logged? }
+  #menu.push :loginRemoteUser, { :controler=> 'my', :action=>  'signinRemoteUser' }, :if => Proc.new { !User.current.logged? }
+  #menu.push :loginRemoteUser, { :controller=> 'account_remote_user', :action=>  'signin_remote_user' }, :if => Proc.new { !User.current.logged? }
+  menu.push :loginRemoteUser, { :controller=> 'account_remote_user', :action=>  'login_remote_user', :ahoj=> '' }, :if => Proc.new { !User.current.logged? }
 end
 
+require_dependency 'redmine_remote_user_auth/hooks'
+require_dependency 'redmine_remote_user_auth/hooks.rb'
