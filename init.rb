@@ -11,3 +11,5 @@ Redmine::MenuManager.map :account_menu do |menu|
   menu.push :loginRemoteUser, :signinRemoteUser_path, :if => Proc.new { !User.current.logged? }
 end
 
+require_dependency 'redmine_remote_user_auth/hooks'
+require_dependency 'redmine_remote_user_auth/hooks.rb'
