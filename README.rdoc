@@ -12,12 +12,12 @@ Redmine 2.x
 
 Before installing make sure to stop redmine.
 
-1. <tt>cd [redmine-install-dir]/plugins</tt>
-2. <tt>export RAILS_ENV=production</tt>
-3. <tt>git clone git://XXXX</tt>
-4. <tt>cd ..</tt>
-5. <tt>rake redmine:plugins:migrate</tt>
-6. <tt>bundle install --without development test</tt>
+    cd [redmine-install-dir]/plugins
+    export RAILS_ENV=production
+    git clone git://XXXX
+    cd ..
+    rake redmine:plugins:migrate
+    bundle install --without development test
 
 After this steps you can switch back on redmine. Existing users will gain 
 Remote User auth method (Look at Administration > Users).
@@ -27,9 +27,9 @@ Remote User auth method (Look at Administration > Users).
 
 Reverse proxy must:
 
-    * check certificate
-    * unset Remote-User_email
-    * header an set it to DN_Email from certificate
+* check certificate
+* unset Remote-User_email
+* header an set it to DN_Email from certificate
 
 Apache example:
 
@@ -51,7 +51,7 @@ Apache example:
         SSLOptions +StdEnvVars
 
 	RequestHeader unset Remote-User-Email
-	RequestHeader add Remote-User-Email "%{SSL_CLIENT_S_DN_Email}e"
+	RequestHeader set Remote-User-Email "%{SSL_CLIENT_S_DN_Email}e"
         
         SSLVerifyClient require
 
@@ -64,9 +64,9 @@ Method.
 Before installing make sure to stop redmine and before that to disable 
 Remote User auth method for all users (Look at Administration > Users)
 
-1. <tt>cd [redmine-install-dir]</tt>
-2. <tt>export RAILS_ENV=production</tt>
-3. <tt>rake redmine:plugins:migrate NAME=redmine_remote_user_auth VERSION=0</tt>
-4. <tt>rm -Rf plugins/redmine_cert_auth</tt>
+    cd [redmine-install-dir]
+    export RAILS_ENV=production
+    rake redmine:plugins:migrate NAME=redmine_remote_user_auth VERSION=0
+    rm -Rf plugins/redmine_cert_auth
 
 After this steps you can switch back on redmine.
