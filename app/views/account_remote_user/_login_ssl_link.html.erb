@@ -1,0 +1,15 @@
+<div id="login-form">
+<%= form_tag(signinRemoteUser_path) do %>
+<%= back_url_hidden_field_tag %>
+<table>
+<tr>
+    <td align="left">
+	&nbsp;
+    </td>
+    <td align="right">
+        <input type="submit" name="login" value="<%=l(:button_login_remote_user)%> &#187;" tabindex="5"/>
+    </td>
+</tr>
+</table>
+<% end %>
+</div>
