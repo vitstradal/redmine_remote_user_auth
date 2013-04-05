@@ -17,7 +17,7 @@ class AccountRemoteUserController < AccountController
       flash.now[:error] = l(:notice_account_unknown_email)
       return
     end
-    unless  user.auth_source.name == 'RemoteUser' 
+    if  user.auth_source.nil? || user.auth_source.name != 'RemoteUser'
       # FIXME: pomoci l(...)
       flash.now[:error] = :user_auth_source_not_remote_user;
       return
