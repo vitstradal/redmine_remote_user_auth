@@ -11,6 +11,7 @@ class AccountRemoteUserController < AccountController
   def login_remote_user
 
     email = request.headers["Remote-User-Email"]
+    email = $1 if email =~ /\/emailAddress=([^\/]*)/
     user = User.find_by_mail(email)
 
     unless user && user.active?

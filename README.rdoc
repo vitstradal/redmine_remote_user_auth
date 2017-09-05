@@ -55,6 +55,13 @@ Apache example:
         
         SSLVerifyClient require
 
+Nginx example:
+
+        server {
+               #....
+               proxy_pass http://127.0.0.1:3000/$1...;
+               proxy_set_header Remote-User-Email $ssl_client_s_dn;
+        }
 
 With valid certificate you can still log-in as users with normal Auth
 Method.
